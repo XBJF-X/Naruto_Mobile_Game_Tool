@@ -110,7 +110,7 @@ class KM_Monitor:
         if type:
             if type == "RECORD":
                 left, top, right, bottom = self.fight_info.get_config("窗口Rect")
-                width, height = self.fight_info.get_config("默认分辨率").split("x")
+                width, height = [int(i) for i in self.fight_info.get_config("默认分辨率").split("x")]
                 click_position = data.get('click_position')
                 self._click_and_return(click_position, 1, (
                     left, bottom - height))

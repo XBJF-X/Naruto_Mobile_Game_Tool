@@ -195,8 +195,8 @@ class FightInformationUpdate:
                         'end_time': end_time
                     })
                 if result[1] == "保存比赛":
-                    self.logger.debug("识别到保存按钮")
                     if self.fight_info.get_config("回放开关") and not self.bool_click_record:
+                        self.logger.debug("识别到保存按钮")
                         # 在这里补充操纵鼠标点击屏幕回放位置的功能
                         data = {
                             'type': "RECORD",
@@ -207,7 +207,6 @@ class FightInformationUpdate:
                         self.bus.publish(MOUSE_CLICK, data)
                         self.logger.debug(f"发布按钮点击事件,{data}")
                         self.bool_click_record = True
-                    pass
                 return
         if self.fight_status_code == 2 and (
                 self.bool_recognize_ninja_1p == 1 and self.bool_recognize_ninja_2p == 1):
@@ -248,23 +247,6 @@ class FightInformationUpdate:
         返回 (对局状态:int,置信度最高的图片id,str)
         """
 
-        # 定义匹配任务函数
-        def match_task(key, tmpl, frame):
-            try:
-                x1, x2, y1, y2 = tmpl["roi"]
-                roi_gray = frame[y1:y2, x1:x2]
-                # 尺寸校验
-                if roi_gray.shape[0] < tmpl["gray"].shape[0] or roi_gray.shape[
-                    1] < tmpl["gray"].shape[1]:
-                    return None
-                temp_result = cv2.matchTemplate(roi_gray, tmpl["gray"],
-                                                cv2.TM_CCOEFF_NORMED)
-                min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(temp_result)
-                return (key, max_val) if max_val > 0 else None
-            except Exception as e:
-                self.logger.error(f"匹配任务异常: {e}")
-                return None
-
         try:
             # self.logger.info("战斗状态识别开始")
             results = []
@@ -272,7 +254,7 @@ class FightInformationUpdate:
                     max_workers=4) as executor:
                 for i in need_recognize:
                     results.append(
-                        executor.submit(match_task, i,
+                        executor.submit(self.match_task, i,
                                         self.fight_status_templates[i],
                                         screen))
             concurrent.futures.wait(results)
@@ -290,7 +272,7 @@ class FightInformationUpdate:
                 valid_results.sort(key=lambda x: x[1], reverse=True)
                 max_result = valid_results[0]  # 取置信度最大的 result
                 if self.fight_info.get_config("调试模式"):
-                    self.logger.debug(f"战斗状态码识别结果：[{max_result[0]}] ({max_result[1]:.3f})")
+                    self.logger.debug(f"战斗状态码识别结果：{valid_results}")
             if max_result and max_result[1] > self.fight_status_templates[
                 max_result[0]].get("threshold"):
                 fight_status_code = self.fight_status_templates[
@@ -310,6 +292,22 @@ class FightInformationUpdate:
             self.logger.error(f"识别战斗状态时出错：{e}")
             return None
 
+    def match_task(self,key, tmpl, frame):
+        try:
+            x1, x2, y1, y2 = tmpl["roi"]
+            roi_gray = frame[y1:y2, x1:x2]
+            # 尺寸校验
+            if roi_gray.shape[0] < tmpl["gray"].shape[0] or roi_gray.shape[
+                1] < tmpl["gray"].shape[1]:
+                self.logger.debug(f"匹配的区域与模版尺寸不符：模版：{tmpl["gray"].shape}，Roi：{roi_gray.shape}")
+                return None
+            temp_result = cv2.matchTemplate(roi_gray, tmpl["gray"],
+                                            cv2.TM_CCOEFF_NORMED)
+            min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(temp_result)
+            return (key, max_val) if max_val >= 0 else None
+        except Exception as e:
+            self.logger.error(f"匹配任务异常: {e}")
+            return None
     def recognize_ougi(self, screen, screen_time):
         """识别奥义点"""
 

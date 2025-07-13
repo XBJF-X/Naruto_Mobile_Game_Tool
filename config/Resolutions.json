@@ -56,8 +56,8 @@
             },
             "保存比赛": {
                 "path": "src\\img\\Fight\\Status\\",
-                "roi": [1173, 1374, 11, 54],
-                "threshold": 0.7,
+                "roi": [1166, 1377, 0, 69],
+                "threshold": 0.9,
                 "fight_status_code": 1,
                 "click_position": [1289,39]
             }
@@ -162,8 +162,8 @@
             },
             "保存比赛": {
                 "path": "src\\img\\Fight\\Status\\",
-                "roi": [1173, 1374, 11, 54],
-                "threshold": 0.7,
+                "roi": [1166, 1377, 0, 69],
+                "threshold": 0.9,
                 "fight_status_code": 1,
                 "click_position": [1289,39]
             }
@@ -268,8 +268,8 @@
             },
             "保存比赛": {
                 "path": "src\\img\\Fight\\Status\\",
-                "roi": [1173, 1374, 11, 54],
-                "threshold": 0.7,
+                "roi": [1166, 1377, 0, 69],
+                "threshold": 0.9,
                 "fight_status_code": 1,
                 "click_position": [1289,39]
             }
@@ -374,8 +374,8 @@
             },
             "保存比赛": {
                 "path": "src\\img\\Fight\\Status\\",
-                "roi": [1173, 1374, 11, 54],
-                "threshold": 0.7,
+                "roi": [1166, 1377, 0, 69],
+                "threshold": 0.9,
                 "fight_status_code": 1,
                 "click_position": [1289,39]
             }

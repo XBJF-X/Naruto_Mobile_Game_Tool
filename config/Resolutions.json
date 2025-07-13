@@ -59,7 +59,7 @@
                 "roi": [1166, 1377, 0, 69],
                 "threshold": 0.9,
                 "fight_status_code": 1,
-                "click_position": [1289,39]
+                "click_position": [2062,62]
             }
         },
         "roi_dic": {
@@ -165,7 +165,7 @@
                 "roi": [1166, 1377, 0, 69],
                 "threshold": 0.9,
                 "fight_status_code": 1,
-                "click_position": [1289,39]
+                "click_position": [1546,47]
             }
         },
         "roi_dic": {
@@ -377,7 +377,7 @@
                 "roi": [1166, 1377, 0, 69],
                 "threshold": 0.9,
                 "fight_status_code": 1,
-                "click_position": [1289,39]
+                "click_position": [1031,31]
             }
         },
         "roi_dic": {
